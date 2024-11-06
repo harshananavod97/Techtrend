@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechTrend - Innovating the Future</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#8B5CF6',
+                    },
+                    animation: {
+                        'gradient': 'gradient 8s linear infinite',
+                    },
+                    keyframes: {
+                        gradient: {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+        /* Custom Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6, #3B82F6);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 8s linear infinite;
+        }
+
+        /* Animated Navigation Links */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Card Hover Effects */
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Custom Background Gradient */
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            background-size: 200% 200%;
+            animation: gradient 8s linear infinite;
+        }
+
+        /* Custom Button Hover Effect */
+        .btn-gradient {
+            background-size: 200% auto;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            background-position: right center;
+            transform: translateY(-1px);
+        }
+
+        /* Stats Counter Animation */
+        .stat-number {
+            counter-reset: stat-number;
+            animation: countUp 2s ease-out forwards;
+        }
+
+        @keyframes countUp {
+            from {
+                counter-increment: stat-number 0;
+            }
+            to {
+                counter-increment: stat-number var(--target-number);
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            border-radius: 5px;
+        }
+
+        /* Input Focus Styles */
+        .custom-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading::after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3B82F6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Loading Screen -->
+    <div class="loading" id="loading"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 backdrop-blur-md z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-bold gradient-text">TechTrend</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-8">
+                        <a href="#" class="nav-link text-gray-700 hover:text-gray-900">Home</a>
+                        <a href="#services" class="nav-link text-gray-700 hover:text-gray-900">Services</a>
+                        <a href="#about" class="nav-link text-gray-700 hover:text-gray-900">About</a>
+                        <a href="#contact" class="btn-gradient px-4 py-2 rounded-full bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all duration-300">
+                            Get Started
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu fixed inset-y-0 left-0 w-64 bg-white shadow-lg md:hidden">
+            <div class="px-4 py-6 space-y-6">
+                <a href="#" class="block text-gray-700 hover:text-gray-900">Home</a>
+                <a href="#services" class="block text-gray-700 hover:text-gray-900">Services</a>
+                <a href="#about" class="block text-gray-700 hover:text-gray-900">About</a>
+                <a href="#contact" class="block text-gray-700 hover:text-gray-900">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 leading-tight opacity-0" id="hero-title">
+                    Innovating the Future with
+                    <span class="gradient-text">Knowledge & Technology</span>
+                </h2>
+                <p class="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto mb-10 opacity-0" id="hero-text">
+                    Your gateway to cutting-edge insights, practical knowledge, and engaging content in technology, education, and entrepreneurship.
+                </p>
+                <div class="flex justify-center gap-4 opacity-0" id="hero-buttons">
+                    <button class="btn-gradient px-8 py-3 rounded-full bg-gradient-to-r from-primary to-secondary text-white">
+                        Get Started
+                    </button>
+                    <button class="px-8 py-3 rounded-full border-2 border-gray-300 text-gray-700 hover:border-gray-400 transition-colors">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="py-20 bg-white" id="services">
+        <div class="max-w-7xl mx-auto px-4">
+            <h3 class="text-3xl font-bold text-center mb-16">What We Offer</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Cards -->
+                <div class="feature-card p-6 rounded-2xl bg-gray-50">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">Latest Tech News</h4>
+                    <p class="text-gray-600">Stay updated with the latest happenings in AI, robotics, and virtual reality.</p>
+                </div>
+                <!-- Add more feature cards as needed -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Animation Scripts -->
+    <script>
+        // Page Load Animation
+        window.addEventListener('load', () => {
+            document.getElementById('loading').style.display = 'none';
+            
+            gsap.to('#hero-title', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.2
+            });
+            
+            gsap.to('#hero-text', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.4
+            });
+            
+            gsap.to('#hero-buttons', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.6
+            });
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</head>
+</body>
+</html>
